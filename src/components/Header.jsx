@@ -4,7 +4,6 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Input from '@material-ui/core/Input';
 
-
 const styles = () => ({
     appHeader: {
         marginBottom: '25px',
@@ -29,8 +28,6 @@ class Header extends Component {
 
     handleAddButtonClick = () => {
         const { itemValue } = this.state;
-
-        // this.props.toDoList.push(itemValue);
         this.props.addItemToList(itemValue);
         this.setState({ itemValue: '' });
     }
