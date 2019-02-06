@@ -38,13 +38,12 @@ class Header extends Component {
 
     componentDidMount () {
         document.addEventListener('keydown', this.handleEnterKey);
-    };
+    }
 
     componentWillUnmount () {
         document.removeEventListener('keydown', this.handleEnterKey);
-    };
+    }
     
-
     render () {
         const { classes } = this.props;
         return (
