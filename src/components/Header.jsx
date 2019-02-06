@@ -24,21 +24,25 @@ class Header extends Component {
 
     handleChange = e => {
         this.setState({ itemValue: e.target.value });
-    }
+    };
 
     handleAddButtonClick = () => {
         const { itemValue } = this.state;
         this.props.addItemToList(itemValue);
         this.setState({ itemValue: '' });
-    }
+    };
 
-    handleEnterKey = (event) => {
+    handleEnterKey = event => {
         if (event.keyCode === 13) this.handleAddButtonClick();
-    }
+    };
 
-    componentDidMount() {
+    componentDidMount () {
         document.addEventListener('keydown', this.handleEnterKey);
-    }
+    };
+
+    componentWillUnmount () {
+        document.removeEventListener('keydown', this.handleEnterKey);
+    };
     
 
     render () {
