@@ -4,6 +4,9 @@ import CheckBoxOutlineBlank from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBox from '@material-ui/icons/CheckBox';
 import Tooltip from '@material-ui/core/Tooltip';
 import { withStyles } from '@material-ui/core';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { removeFromList } from '../actions';
 
 const styles = () => ({
     todoItem: {
@@ -59,11 +62,11 @@ const styles = () => ({
 
 class ToDoList extends Component {
 
-    handleRemoveButtonClick = (e) => {
-        this.props.removeItemFromList(e.currentTarget.dataset.item);
+    handleRemoveButtonClick = e => {
+        this.props.removeFromList(e.currentTarget.dataset.item);
     }
 
-    handleDoneItems = (e) => {
+    handleDoneItems = e => {
         e.currentTarget.parentElement.classList.toggle(this.props.classes.done);
         e.currentTarget.children[0].classList.toggle(this.props.classes.hiddenItem);
         e.currentTarget.children[1].classList.toggle(this.props.classes.hiddenItem);
@@ -71,9 +74,9 @@ class ToDoList extends Component {
 
 
     render () {
-        const { classes } = this.props;
+        const { classes, toDoList } = this.props;
         
-        const list = this.props.toDoList.map(item => 
+        const list = toDoList.map(item => 
             <div  key={item} className={classes.todoItem}>
                 <div onClick={this.handleDoneItems} className={classes.itemRow}>
                     <CheckBox className={classes.hiddenItem} style={{marginTop: '3px'}} />
@@ -84,7 +87,7 @@ class ToDoList extends Component {
                 </div>
                 <DeleteIcon onClick={this.handleRemoveButtonClick} data-item={item} className={classes.delIcon}/>
             </div>
-        );
+        )
 
         return (
             <div>
@@ -94,4 +97,14 @@ class ToDoList extends Component {
     }
 }
 
-export default withStyles(styles)(ToDoList);
+const mapStateToProps = state => {
+    return {
+        toDoList: state
+    }
+}
+
+const matchDispatchToProps = dispatch => {
+    return bindActionCreators({ removeFromList }, dispatch);
+}
+
+export default connect(mapStateToProps, matchDispatchToProps)(withStyles(styles)(ToDoList));

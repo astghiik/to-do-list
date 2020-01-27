@@ -3,6 +3,9 @@ import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Input from '@material-ui/core/Input';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { addToList } from '../actions';
 
 const styles = () => ({
     appHeader: {
@@ -26,9 +29,18 @@ class Header extends Component {
         this.setState({ itemValue: e.target.value });
     };
 
+    // addItemToList = itemForAdd => {
+    //     const { toDoList } = this.props;
+    //     if (itemForAdd.trim() && toDoList.indexOf(itemForAdd.trim()) === -1) {
+    //       toDoList.push(itemForAdd);
+    //       this.props.addToList(itemForAdd);
+    //       //this.setState({ toDoList });
+    //     }
+    //   }
+
     handleAddButtonClick = () => {
         const { itemValue } = this.state;
-        this.props.addItemToList(itemValue);
+        this.props.addToList(itemValue);
         this.setState({ itemValue: '' });
     };
 
@@ -59,4 +71,14 @@ class Header extends Component {
     }
 }
 
-export default withStyles(styles)(Header);
+// const mapStateToProps = state => {
+//     return {
+//         toDoList: state.toDoList || []
+//     }
+// }
+
+const matchDispatchToProps = dispatch => {
+    return bindActionCreators({ addToList }, dispatch);
+}
+
+export default connect(null, matchDispatchToProps)(withStyles(styles)(Header));
