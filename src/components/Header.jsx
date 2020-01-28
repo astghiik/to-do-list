@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
@@ -17,65 +17,44 @@ const styles = () => ({
     }
 });
 
-class Header extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            itemValue: ''
-        };
-    }
 
-    handleChange = e => {
-        this.setState({ itemValue: e.target.value });
+function Header(props) {
+    const [itemValue, setItemValue] = useState('');
+    const { classes, addToList } = props;
+
+    const handleChange = e => {
+        setItemValue(e.target.value);
     };
 
-    // addItemToList = itemForAdd => {
-    //     const { toDoList } = this.props;
-    //     if (itemForAdd.trim() && toDoList.indexOf(itemForAdd.trim()) === -1) {
-    //       toDoList.push(itemForAdd);
-    //       this.props.addToList(itemForAdd);
-    //       //this.setState({ toDoList });
-    //     }
-    //   }
-
-    handleAddButtonClick = () => {
-        const { itemValue } = this.state;
-        this.props.addToList(itemValue);
-        this.setState({ itemValue: '' });
+    const handleAddButtonClick = () => {
+        addToList(itemValue);
+        setItemValue('');
     };
 
-    handleEnterKey = event => {
-        if (event.keyCode === 13) this.handleAddButtonClick();
+    const handleEnterKey = event => {
+        if (event.keyCode === 13) handleAddButtonClick();
     };
-
-    componentDidMount () {
-        document.addEventListener('keydown', this.handleEnterKey);
-    }
-
-    componentWillUnmount () {
-        document.removeEventListener('keydown', this.handleEnterKey);
-    }
     
-    render () {
-        const { classes } = this.props;
-        return (
-            <div className={classes.appHeader}>
-                <Typography variant="h3" style={{margin: '0 0 50px 105px'}}>To-Do List</Typography>
-                <Input className={classes.input} type='text' onChange={this.handleChange} value={this.state.itemValue} placeholder='what next?' />
-                <Button color="primary" onClick={this.handleAddButtonClick}>
-                    Add
-                </Button>
-                
-            </div>
-        );
-    }
+    
+    return (
+        <div className={classes.appHeader}>
+            <Typography variant="h3" style={{margin: '0 0 50px 105px'}}>To-Do List</Typography>
+            <Input 
+                className={classes.input}
+                type='text' 
+                onChange={handleChange} 
+                onKeyDown={handleEnterKey} 
+                value={itemValue} 
+                placeholder='what next?' 
+            />
+            <Button color="primary" onClick={handleAddButtonClick}>
+                Add
+            </Button>
+        </div>
+    );
+    
 }
 
-// const mapStateToProps = state => {
-//     return {
-//         toDoList: state.toDoList || []
-//     }
-// }
 
 const matchDispatchToProps = dispatch => {
     return bindActionCreators({ addToList }, dispatch);

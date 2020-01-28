@@ -1,8 +1,9 @@
 export default function listReducer(state = [], action) {
     switch (action.type) {
         case 'ADD':
-            if (action.payload.trim() && !state.includes(action.payload.trim()))
-                return [...state, action.payload];
+            const item = action.payload.trim();
+            if (item && !state.includes(item))
+                return [...state, item];
             else
                 return state;   //?????????
     

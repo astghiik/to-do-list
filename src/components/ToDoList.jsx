@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import DeleteIcon from '@material-ui/icons/Delete';
 import CheckBoxOutlineBlank from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBox from '@material-ui/icons/CheckBox';
@@ -60,41 +60,38 @@ const styles = () => ({
     },
 })
 
-class ToDoList extends Component {
+function ToDoList(props) {
+    const { classes, toDoList, removeFromList } = props;
 
-    handleRemoveButtonClick = e => {
-        this.props.removeFromList(e.currentTarget.dataset.item);
+    const handleRemoveButtonClick = e => {
+        removeFromList(e.currentTarget.dataset.item);
     }
 
-    handleDoneItems = e => {
-        e.currentTarget.parentElement.classList.toggle(this.props.classes.done);
-        e.currentTarget.children[0].classList.toggle(this.props.classes.hiddenItem);
-        e.currentTarget.children[1].classList.toggle(this.props.classes.hiddenItem);
+    const handleDoneItems = e => {
+        e.currentTarget.parentElement.classList.toggle(classes.done);
+        e.currentTarget.children[0].classList.toggle(classes.hiddenItem);
+        e.currentTarget.children[1].classList.toggle(classes.hiddenItem);
     }
 
-
-    render () {
-        const { classes, toDoList } = this.props;
-        
-        const list = toDoList.map(item => 
-            <div  key={item} className={classes.todoItem}>
-                <div onClick={this.handleDoneItems} className={classes.itemRow}>
-                    <CheckBox className={classes.hiddenItem} style={{marginTop: '3px'}} />
-                    <CheckBoxOutlineBlank className={classes.itemCheckBox} />
-                    <Tooltip title={item}>
-                      <span className={classes.itemText}>{item}</span>
-                    </Tooltip>
-                </div>
-                <DeleteIcon onClick={this.handleRemoveButtonClick} data-item={item} className={classes.delIcon}/>
+    
+    const list = toDoList.map(item => 
+        <div  key={item} className={classes.todoItem}>
+            <div onClick={handleDoneItems} className={classes.itemRow}>
+                <CheckBox className={classes.hiddenItem} style={{marginTop: '3px'}} />
+                <CheckBoxOutlineBlank className={classes.itemCheckBox} />
+                <Tooltip title={item}>
+                    <span className={classes.itemText}>{item}</span>
+                </Tooltip>
             </div>
-        )
+            <DeleteIcon onClick={handleRemoveButtonClick} data-item={item} className={classes.delIcon}/>
+        </div>
+    )
 
-        return (
-            <div>
-                {list}
-            </div>
-        );
-    }
+    return (
+        <div>
+            {list}
+        </div>
+    );
 }
 
 const mapStateToProps = state => {
